@@ -95,9 +95,9 @@ def TrainAndSave():
     model = Train(model,dataset, LR, NUM_EPOCHS,MODEL_SAVE_PATH)
     testDataset = GetTestDataset(DATASET_PATH,MAX_LEN,SPLIT_RATE,BATCH_SIZE)
     Inference(model,testDataset)
-    SaveModel(model, MODEL_SAVE_PATH)
-    newModel = LoadModel(MODEL_SAVE_PATH)
-    Inference(newModel,testDataset)
+    #SaveModel(model, MODEL_SAVE_PATH)
+    #newModel = LoadModel(MODEL_SAVE_PATH)
+    #Inference(newModel,testDataset)
 
 #測試量化訓練
 def QatTest():
