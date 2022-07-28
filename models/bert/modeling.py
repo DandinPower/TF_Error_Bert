@@ -59,7 +59,6 @@ class BERTClassifier(tf.keras.Model):
         tempValid = self.GetValidLen(tokens)
         inputs = (tokens,tempSegments,tempValid)
         output = self.bert(inputs)
-        print(output)
         output = self.kernel.random_error(self.classifier(output), ERROR_RATE, FLIP_START, FLIP_END)
         result = self.kernel.random_error(tf.nn.softmax(output), ERROR_RATE, FLIP_START, FLIP_END)
         return result
