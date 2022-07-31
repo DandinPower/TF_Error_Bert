@@ -31,6 +31,7 @@ def Train(model,dataset,lr,num_epochs,savePath):
     print('Training...')
     optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4)  
     metrics=tf.metrics.SparseCategoricalAccuracy()
+    history = []
     for x in range(num_epochs):
         startTime = time.time()
         j = 0
@@ -50,5 +51,11 @@ def Train(model,dataset,lr,num_epochs,savePath):
         pBar.finish()
         print(f'cost time: {round(time.time() - startTime,3)} sec')
         print(f'epoch:{x} accuracy:{metrics.result().numpy()}')
+        history.append(metrics.result().numpy())
         metrics.reset_states()
-    return model
+    return model, history
+
+def WriteHistory(_history, _path):
+    with open(_path, 'w') as f:
+        for item in _history:
+            f.write(f'{item}\n')

@@ -26,6 +26,8 @@
     ERROR_RATE = 0.25
     FLIP_START = 0
     FLIP_END = 32
+
+    HISTORY_PATH = history.txt
     ```
 
 2. 下載以下函示庫

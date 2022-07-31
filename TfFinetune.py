@@ -2,7 +2,7 @@ from models.bert.configs import Config
 from models.bert.modeling import BERTModel,BERTClassifier
 from models.preprocess.data import YelpDataset,load_vocab,DataLoader,GetTrainDataset,GetTestDataset
 from models.preprocess.load import load_variable,Parameters,LoadModel,SaveModel,WriteTfLite,WriteInt8TFLite
-from models.train.classification import Train,Inference
+from models.train.classification import Train, Inference, WriteHistory
 from models.train.multigpu import MultiTrain
 from models.train.qat import QuantizationAwareTraining
 from models.valid.tflite import TfliteTest
@@ -25,6 +25,7 @@ GPU_NUMS = int(os.getenv('GPU_NUMS'))
 GLOBAL_BATCH_SIZE = GPU_NUMS * BATCH_SIZE
 TFLITE_PATH = os.getenv('TFLITE_PATH')
 TFLITE_INT8_PATH = os.getenv('TFLITE_INT8_PATH')
+HISTORY_PATH = os.getenv('HISTORY_PATH')
 
 #創立一個新的model並測試資料流過時model的反應
 def DataFlowTest():
@@ -92,9 +93,10 @@ def TrainAndSave():
     model = BERTClassifier(config, parameters)
     model.LoadParameters()
     dataset = GetTrainDataset(DATASET_PATH,MAX_LEN,SPLIT_RATE,BATCH_SIZE)
-    model = Train(model,dataset, LR, NUM_EPOCHS,MODEL_SAVE_PATH)
+    model, history = Train(model,dataset, LR, NUM_EPOCHS,MODEL_SAVE_PATH)
     testDataset = GetTestDataset(DATASET_PATH,MAX_LEN,SPLIT_RATE,BATCH_SIZE)
     Inference(model,testDataset)
+    WriteHistory(history, HISTORY_PATH)
     #SaveModel(model, MODEL_SAVE_PATH)
     #newModel = LoadModel(MODEL_SAVE_PATH)
     #Inference(newModel,testDataset)
